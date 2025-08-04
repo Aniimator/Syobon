@@ -1,0 +1,84 @@
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>いやあ</title>
+        <link rel="stylesheet" href="styleRoulette.css">
+    </head>
+    <body>
+        <h1>回転するペニス - "A roleta menos russa possível"</h1>
+    <div class="dots" id="dots">
+        <span class="dot">•</span>
+        <span class="dot">•</span>
+        <span class="dot">•</span>
+        <span class="dot">•</span>
+        <span class="dot">•</span>
+        <span class="dot">•</span>
+    </div>
+
+    <input id="guess" placeholder="Tente sua ''sorte'' aqui." min="1" max="6">
+    <button id="shootBtn" onclick="play()">T̸̘̊Ẻ̴̡̘̯̻̻͇̝͙̠̠̺͖͉̏N̸̢͎͖͈̪͆̂̍͌T̸̻̰̞̣͈̝̄̊͌̿̿̄͗͝A̷̢̰̩̖̤̔̀́͌̈̋̒̏͛͠R̵̢̡̜̺̯͉̭̭̫̖̙̀͌͋́̓̌̎̈́͆̚̕͝͠</button>
+
+    <div id="mensage"></div>
+
+    <audio id="gunshot">
+        <source src="tiro.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const input = document.getElementById('guess');
+        const shootBtn = document.getElementById('shootBtn');
+        const dots = document.querySelectorAll('.dot');
+        const mensage = document.getElementById('mensage');
+        const gunshot = document.getElementById('gunshot');
+
+        function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function play() {
+        const guess = parseInt(input.value);
+        mensage.textContent = "";
+
+        if (!guess || guess < 1 || guess > 6) {
+            mensage.textContent = "Digite um número de 1 a 6!";
+            return;
+        }
+
+        shootBtn.disabled = true;
+        input.disabled = true;
+
+        const bulletPosition = Math.floor(Math.random() * 6) + 1;
+
+        dots.forEach(dot => dot.className = "dot");
+
+        for (let i = 0; i < 6; i++) {
+            await sleep(300);
+            if (i + 1 === bulletPosition) {
+            dots[i].classList.add('red');
+            break;
+            } else {
+            dots[i].classList.add('green');
+            }
+        }
+
+        await sleep(400);
+
+        if (guess === bulletPosition) {
+            gunshot.play();
+            mensage.textContent = "Você perdeu!";
+        } else {
+            mensage.textContent = "Você se safou... dessa vez.";
+        }
+
+        await sleep(1000);
+
+        dots.forEach(dot => dot.className = "dot");
+        input.value = "";
+        input.disabled = false;
+        shootBtn.disabled = false;
+        }
+    </script>
+    </body>
+    </html>
